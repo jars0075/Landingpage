@@ -87,7 +87,7 @@ export default function Page() {
           <div className="absolute inset-0 bg-[radial-gradient(#ffffff33_1px,transparent_1px)] [background-size:20px_20px]"></div>
           
           {/* Floating orbs */}
-          <div className="absolute w-96 h-96 rounded-full blur-3xl opacity-50" style={{ backgroundColor: 'rgba(95, 190, 55, 0.3)' }} className="-top-48 -left-48"></div>
+          <div className="absolute w-96 h-96 rounded-full blur-3xl opacity-50 -top-48 -left-48" style={{ backgroundColor: 'rgba(95, 190, 55, 0.3)' }}></div>
           <div className="absolute w-96 h-96 rounded-full blur-3xl opacity-50 bg-white/20 -bottom-48 -right-48"></div>
           
           <div className="max-w-[1200px] mx-auto relative">
@@ -386,7 +386,7 @@ export default function Page() {
           <div className="absolute inset-0 bg-[radial-gradient(#ffffff33_1px,transparent_1px)] [background-size:20px_20px]"></div>
           
           {/* Floating orbs */}
-          <div className="absolute w-96 h-96 rounded-full blur-3xl opacity-50" style={{ backgroundColor: 'rgba(95, 190, 55, 0.3)' }} className="-top-48 -left-48"></div>
+          <div className="absolute w-96 h-96 rounded-full blur-3xl opacity-50 -top-48 -left-48" style={{ backgroundColor: 'rgba(95, 190, 55, 0.3)' }}></div>
           <div className="absolute w-96 h-96 rounded-full blur-3xl opacity-50 bg-white/20 -bottom-48 -right-48"></div>
           
           <div className="max-w-[1200px] mx-auto relative">
