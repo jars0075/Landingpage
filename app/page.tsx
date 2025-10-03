@@ -27,8 +27,8 @@ export default function Page() {
         <Navigation />
 
       <main className="flex-grow pt-16 lg:pt-20">
-        {/* Hero Section */}
-        <section className="py-20 px-6 relative min-h-screen flex items-center">
+                {/* Hero Section */}
+                <section className="py-20 px-4 sm:px-6 relative min-h-screen flex items-center">
           {/* Background Image */}
           <div className="absolute inset-0 z-0">
             <Image 
@@ -42,19 +42,19 @@ export default function Page() {
             <div className="absolute inset-0 bg-black/40"></div>
           </div>
           
-          <div className="max-w-[1200px] mx-auto text-center relative z-10">
-            <div className="inline-flex items-center px-6 py-2 text-base font-medium text-blue-600 mb-8 glimmer-pill fade-in bg-white/90 border border-blue-200 shadow-[0_0_15px_rgba(59,130,246,0.1)] backdrop-blur-sm">
+          <div className="max-w-[1200px] mx-auto text-center relative z-10 w-full">
+            <div className="inline-flex items-center px-4 sm:px-6 py-2 text-sm sm:text-base font-medium text-blue-600 mb-6 sm:mb-8 glimmer-pill fade-in bg-white/90 border border-blue-200 shadow-[0_0_15px_rgba(59,130,246,0.1)] backdrop-blur-sm">
               <span className={playfair.className}>Limited Time Offer</span>
             </div>
-            <h1 className={`text-4xl md:text-6xl font-medium mb-6 tracking-tight fade-in delay-1 text-white drop-shadow-lg ${playfair.className}`}>
-              Revolutionary <span className="text-blue-300">SoftWave</span><br />Therapy Treatment
+            <h1 className={`text-3xl sm:text-4xl md:text-6xl font-medium mb-4 sm:mb-6 tracking-tight fade-in delay-1 text-white drop-shadow-lg leading-tight ${playfair.className}`}>
+              Revolutionary <span className="text-blue-300">SoftWave</span><br className="hidden sm:block" />Therapy Treatment
             </h1>
-            <p className="text-xl text-white/90 mb-8 fade-in delay-2 max-w-3xl mx-auto drop-shadow-md">
+            <p className="text-lg sm:text-xl text-white/90 mb-6 sm:mb-8 fade-in delay-2 max-w-3xl mx-auto drop-shadow-md px-2">
               For Anyone With Knee Pain, Shoulder Pain, Back Pain, Elbow Pain, Arthritis, Carpal Tunnel, Joint Pain & More!
             </p>
-            <div className="space-y-6 fade-in delay-3">
+            <div className="space-y-4 sm:space-y-6 fade-in delay-3">
               <div className="flex items-center justify-center">
-                <p className="text-sm text-white font-medium bg-black/30 px-3 py-1 rounded-full backdrop-blur-sm">
+                <p className="text-xs sm:text-sm text-white font-medium bg-black/30 px-3 py-1 rounded-full backdrop-blur-sm">
                   <span className="font-bold">1,000+</span> patients found relief
                 </p>
               </div>
@@ -62,30 +62,32 @@ export default function Page() {
               <div className="flex flex-col items-center gap-3">
                 <ScrollToFormButton 
                   size="lg" 
-                  className="rounded-full text-lg px-8 py-4 bg-green-600 hover:bg-green-700 border-2 border-white shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
+                  className="rounded-full text-sm sm:text-lg px-6 sm:px-8 py-3 sm:py-4 bg-blue-600 hover:bg-green-500 border-2 border-white shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
                 >
-                  <span className="relative z-10">Get Your $49 Voucher Today - Limited Time!</span>
+                  <span className="relative z-10 text-center">
+                    <span className="block sm:hidden">Get $49 Voucher Today!</span>
+                    <span className="hidden sm:block">Get Your $49 Voucher Today!</span>
+                  </span>
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                 </ScrollToFormButton>
 
-                <div className="flex items-center gap-2 text-white/90 text-sm">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="flex items-center gap-2 text-white/90 text-xs sm:text-sm">
+                  <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  <span>Only 7 spots remaining at this price</span>
+                  <span className="text-center">Only 7 spots remaining at this price</span>
                 </div>
               </div>
             </div>
           </div>
         </section>
-
-        {/* Features Section - Our new modern version */}
-        <section id="why-softwave" className="py-20 px-6 relative overflow-hidden bg-gradient-to-br from-emerald-600 via-emerald-500 to-emerald-700">
+                  {/* Features Section - Our new modern version */}
+        <section id="why-softwave" className="py-20 px-6 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #5fbe37 0%, #52a52e 50%, #458c25 100%)' }}>
           {/* Dot pattern overlay */}
           <div className="absolute inset-0 bg-[radial-gradient(#ffffff33_1px,transparent_1px)] [background-size:20px_20px]"></div>
           
           {/* Floating orbs */}
-          <div className="absolute w-96 h-96 rounded-full blur-3xl opacity-50 bg-emerald-300/30 -top-48 -left-48"></div>
+          <div className="absolute w-96 h-96 rounded-full blur-3xl opacity-50" style={{ backgroundColor: 'rgba(95, 190, 55, 0.3)' }} className="-top-48 -left-48"></div>
           <div className="absolute w-96 h-96 rounded-full blur-3xl opacity-50 bg-white/20 -bottom-48 -right-48"></div>
           
           <div className="max-w-[1200px] mx-auto relative">
@@ -93,7 +95,7 @@ export default function Page() {
               <h2 className={`text-4xl md:text-5xl font-medium mb-4 text-white ${playfair.className}`}>
                 Why Choose SoftWave Therapy?
               </h2>
-              <p className="text-blue-50 text-xl max-w-2xl mx-auto">
+              <p className="text-white/90 text-xl max-w-2xl mx-auto">
                 FDA approved, advanced technology for faster pain relief and recovery.
               </p>
             </div>
@@ -378,19 +380,19 @@ export default function Page() {
           </div>
         </section>
 
-        {/* Contact Form Section */}
-        <section id="contact-form" className="py-20 px-6 border-t border-gray-200 relative overflow-hidden bg-gradient-to-br from-emerald-600 via-emerald-500 to-emerald-700">
+           {/* Contact Form Section */}
+           <section id="contact-form" className="py-20 px-6 border-t border-gray-200 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #5fbe37 0%, #52a52e 50%, #458c25 100%)' }}>
           {/* Dot pattern overlay */}
           <div className="absolute inset-0 bg-[radial-gradient(#ffffff33_1px,transparent_1px)] [background-size:20px_20px]"></div>
           
           {/* Floating orbs */}
-          <div className="absolute w-96 h-96 rounded-full blur-3xl opacity-50 bg-emerald-300/30 -top-48 -left-48"></div>
+          <div className="absolute w-96 h-96 rounded-full blur-3xl opacity-50" style={{ backgroundColor: 'rgba(95, 190, 55, 0.3)' }} className="-top-48 -left-48"></div>
           <div className="absolute w-96 h-96 rounded-full blur-3xl opacity-50 bg-white/20 -bottom-48 -right-48"></div>
           
           <div className="max-w-[1200px] mx-auto relative">
             <div className="text-center mb-12 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-medium mb-4 text-white ${playfair.className}`}>Claim Your $49 Softwave Introductory Special</h2>
-              <p className="text-emerald-50 text-xl font-bold drop-shadow-lg" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>
+              <p className="text-white/90 text-xl font-bold drop-shadow-lg" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>
                 <span style={{ color: '#e67e22' }}>LIMITED TIME OFFER</span> - Don&apos;t miss out on this revolutionary pain relief treatment!
               </p>
             </div>
