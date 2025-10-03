@@ -82,7 +82,7 @@ export default function Page() {
           </div>
         </section>
                   {/* Features Section - Our new modern version */}
-        <section id="why-softwave" className="py-20 px-6 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #5fbe37 0%, #52a52e 50%, #458c25 100%)' }}>
+        <section id="why-softwave" className="py-20 px-6 relative overflow-hidden bg-gradient-to-br from-emerald-600 via-emerald-500 to-emerald-700">
           {/* Dot pattern overlay */}
           <div className="absolute inset-0 bg-[radial-gradient(#ffffff33_1px,transparent_1px)] [background-size:20px_20px]"></div>
           
@@ -260,7 +260,7 @@ export default function Page() {
           <div className="max-w-[1200px] mx-auto relative">
             <div className="text-center mb-16 scroll-animation">
               <h2 className={`text-4xl md:text-5xl font-medium mb-4 text-yellow-300 ${playfair.className}`}>Conditions We Treat</h2>
-              <p className={`text-white text-3xl max-w-2xl mx-auto drop-shadow-lg ${playfair.className}`} style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>SoftWave therapy is effective for a wide range of pain conditions.</p>
+              <p className={`text-white text-3xl max-w-2xl mx-auto drop-shadow-lg ${playfair.className}`}>SoftWave therapy is effective for a wide range of pain conditions.</p>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -381,7 +381,7 @@ export default function Page() {
         </section>
 
            {/* Contact Form Section */}
-           <section id="contact-form" className="py-20 px-6 border-t border-gray-200 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #5fbe37 0%, #52a52e 50%, #458c25 100%)' }}>
+           <section id="contact-form" className="py-20 px-6 border-t border-gray-200 relative overflow-hidden bg-gradient-to-br from-emerald-600 via-emerald-500 to-emerald-700">
           {/* Dot pattern overlay */}
           <div className="absolute inset-0 bg-[radial-gradient(#ffffff33_1px,transparent_1px)] [background-size:20px_20px]"></div>
           
@@ -392,7 +392,7 @@ export default function Page() {
           <div className="max-w-[1200px] mx-auto relative">
             <div className="text-center mb-12 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-medium mb-4 text-white ${playfair.className}`}>Claim Your $49 Softwave Introductory Special</h2>
-              <p className="text-white/90 text-xl font-bold drop-shadow-lg" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>
+              <p className="text-white/90 text-xl font-bold drop-shadow-lg">
                 <span style={{ color: '#e67e22' }}>LIMITED TIME OFFER</span> - Don&apos;t miss out on this revolutionary pain relief treatment!
               </p>
             </div>
