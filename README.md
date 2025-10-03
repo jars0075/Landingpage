@@ -2,6 +2,24 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+### Environment Setup
+
+1. Create a `.env.local` file in the project root with the following variables:
+
+```bash
+# Google Maps API Key (get from Google Cloud Console)
+GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here
+
+# Brevo API Key (for voucher system)
+BREVO_API_KEY=your_brevo_api_key_here
+```
+
+2. Get your API keys:
+   - **Google Maps API Key**: Go to [Google Cloud Console](https://console.cloud.google.com/), enable the Maps Embed API, and create an API key
+   - **Brevo API Key**: Sign up at [Brevo](https://www.brevo.com/) and get your API key from the settings
+
+### Running the Development Server
+
 First, run the development server:
 
 ```bash

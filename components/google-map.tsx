@@ -1,5 +1,7 @@
 "use client"
 
+import { useState, useEffect } from "react"
+
 interface GoogleMapProps {
   address?: string
   businessName?: string
@@ -11,12 +13,39 @@ export function GoogleMap({
   businessName = "Preferred Therapy Services",
   className = ""
 }: GoogleMapProps) {
-  // Encode the address for the Google Maps embed URL
-  const encodedAddress = encodeURIComponent(`${businessName}, ${address}`)
-  const mapSrc = `https://www.google.com/maps/embed/v1/place?key=AIzaSyD-oIc-yVG6WB_M_9wTWD49u8cccx7HkrY&q=${encodedAddress}&zoom=15`
+  const [mapSrc, setMapSrc] = useState<string>("")
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   
-  // For now, we'll use a search-based embed that doesn't require an API key
-  const searchMapSrc = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3024.123456789!2d-74.0059413!3d40.7127753!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDDCsDQyJzQ2LjAiTiA3NMKwMDAnMjEuNCJX!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus`
+  // Encode the address for the Google Maps search URL (for directions link)
+  const encodedAddress = encodeURIComponent(`${businessName}, ${address}`)
+  
+  useEffect(() => {
+    const fetchMapUrl = async () => {
+      try {
+        setIsLoading(true)
+        setError(null)
+        
+        const response = await fetch(`/api/maps?address=${encodeURIComponent(address)}&businessName=${encodeURIComponent(businessName)}`)
+        
+        if (!response.ok) {
+          throw new Error('Failed to load map')
+        }
+        
+        const data = await response.json()
+        setMapSrc(data.mapSrc)
+      } catch (err) {
+        console.error('Error loading map:', err)
+        setError('Failed to load map')
+        // Fallback to a basic Google Maps search embed (no API key required)
+        setMapSrc(`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3024.123456789!2d-74.0059413!3d40.7127753!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDDCsDQyJzQ2LjAiTiA3NMKwMDAnMjEuNCJX!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus`)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    
+    fetchMapUrl()
+  }, [address, businessName])
 
   return (
     <div className={`bg-blue-50 rounded-xl border border-gray-200 overflow-hidden ${className}`}>
@@ -56,18 +85,37 @@ export function GoogleMap({
         </div>
       </div>
 
-            {/* Map Container */}
-    <div className="relative h-80">
-        <iframe
-          src={mapSrc}
-          width="100%"
-          height="100%"
-          style={{ border: 0 }}
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          title={`Map showing location of ${businessName}`}
-        />
+      {/* Map Container */}
+      <div className="relative h-80">
+        {isLoading ? (
+          <div className="flex items-center justify-center h-full bg-gray-100">
+            <div className="text-center">
+              <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
+              <p className="text-gray-600">Loading map...</p>
+            </div>
+          </div>
+        ) : error ? (
+          <div className="flex items-center justify-center h-full bg-gray-100">
+            <div className="text-center text-gray-600">
+              <svg className="w-12 h-12 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <p>Unable to load map</p>
+              <p className="text-sm">Please try refreshing the page</p>
+            </div>
+          </div>
+        ) : (
+          <iframe
+            src={mapSrc}
+            width="100%"
+            height="100%"
+            style={{ border: 0 }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            title={`Map showing location of ${businessName}`}
+          />
+        )}
       </div>
       
       {/* Directions Link */}
