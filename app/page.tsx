@@ -47,7 +47,7 @@ export default function Page() {
               <span className={playfair.className}>Limited Time Offer</span>
             </div>
             <h1 className={`text-3xl sm:text-4xl md:text-6xl font-medium mb-4 sm:mb-6 tracking-tight fade-in delay-1 text-white drop-shadow-lg leading-tight ${playfair.className}`}>
-              Revolutionary <span className="text-blue-300">SoftWave</span><br className="hidden sm:block" />Therapy Treatment
+              Revolutionary <span className="text-blue-300">SoftWave</span><br />Therapy Treatment
             </h1>
             <p className="text-lg sm:text-xl text-white/90 mb-6 sm:mb-8 fade-in delay-2 max-w-3xl mx-auto drop-shadow-md px-2">
               For Anyone With Knee Pain, Shoulder Pain, Back Pain, Elbow Pain, Arthritis, Carpal Tunnel, Joint Pain & More!
