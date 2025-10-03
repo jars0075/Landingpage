@@ -393,18 +393,18 @@ export default function Page() {
             <div className="text-center mb-12 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-medium mb-4 text-white ${playfair.className}`}>Claim Your $49 Softwave Introductory Special</h2>
               <p className="text-white/90 text-xl font-bold drop-shadow-lg" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>
-                <span style={{ color: '#e67e22' }}>LIMITED TIME OFFER</span> - Don&apos;t miss out on this revolutionary pain relief treatment!
+                <span style={{ color: '#e67e22' }}>LIMITED TIME OFFER</span> 
               </p>
             </div>
             
             <div className="grid lg:grid-cols-2 gap-8 items-start">
               {/* Form Section - First on mobile, left on desktop */}
-              <div className="scroll-animation order-2 lg:order-1">
+              <div className="scroll-animation order-1 lg:order-1">
                 <VoucherForm />
               </div>
               
               {/* Map Section - Second on mobile, right on desktop */}
-              <div className="scroll-animation order-1 lg:order-2">
+              <div className="scroll-animation order-2 lg:order-2">
                 <GoogleMap 
                   businessName="Preferred Therapy Service"
                   address="6962 Boulder Ave, Highland, CA 92346"
