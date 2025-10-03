@@ -1,15 +1,17 @@
-'use client'
-
-import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { useEffect, useRef } from "react"
+import Image from "next/image"
 import { Playfair_Display, Inter } from 'next/font/google'
+import { ScrollAnimationProvider } from "@/components/scroll-animation-provider"
+import { ScrollToFormButton } from "@/components/scroll-to-form-button"
+import { VoucherForm } from "@/components/voucher-form"
+import { GoogleMap } from "@/components/google-map"
+import { FAQAccordion } from "@/components/faq-accordion"
+import { Navigation } from "@/components/navigation"
 
 const playfair = Playfair_Display({ 
   subsets: ['latin'],
   display: 'swap',
-  weight: ['400', '500'],
-  style: ['normal'],
+  weight: ['400', '500']
 })
 
 const inter = Inter({
@@ -18,422 +20,479 @@ const inter = Inter({
 })
 
 export default function Page() {
-  const observerRef = useRef<IntersectionObserver | null>(null);
-
-  useEffect(() => {
-    observerRef.current = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('animate-in');
-        }
-      });
-    }, {
-      threshold: 0.1,
-      rootMargin: '50px'
-    });
-
-    document.querySelectorAll('.scroll-animation').forEach((element) => {
-      observerRef.current?.observe(element);
-    });
-
-    return () => observerRef.current?.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const loadTally = () => {
-      const existingScript = document.querySelector('script[src="https://tally.so/widgets/embed.js"]');
-      if (!existingScript) {
-        const script = document.createElement('script');
-        script.src = "https://tally.so/widgets/embed.js";
-        script.async = true;
-        script.onload = () => {
-          // @ts-ignore
-          if (window.Tally) {
-            // @ts-ignore
-            window.Tally.loadEmbeds();
-          }
-        };
-        document.body.appendChild(script);
-      }
-    };
-
-    loadTally();
-  }, []);
-
   return (
-    <div className={`flex flex-col min-h-screen bg-black text-foreground bg-dotted-grid ${inter.className}`}>
-      <style jsx global>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
+    <ScrollAnimationProvider>
+      <div className={`flex flex-col min-h-screen bg-white text-gray-900 ${inter.className}`}>
+        {/* Navigation */}
+        <Navigation />
 
-        @keyframes shimmer {
-          0% { background-position: 0% 0; }
-          100% { background-position: 200% 0; }
-        }
-
-        .fade-in {
-          animation: fadeIn 0.8s ease-out forwards;
-          opacity: 0;
-        }
-
-        .delay-1 { animation-delay: 0.2s; }
-        .delay-2 { animation-delay: 0.4s; }
-        .delay-3 { animation-delay: 0.6s; }
-        
-        .glimmer-card {
-          position: relative;
-          background: rgb(23, 23, 23);
-          border-radius: 12px;
-          overflow: hidden;
-        }
-        
-        .glimmer-card::before {
-          content: '';
-          position: absolute;
-          inset: -1px;
-          background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(236, 72, 153, 0.03),
-            rgba(236, 72, 153, 0.06),
-            rgba(236, 72, 153, 0.03),
-            transparent
-          );
-          background-size: 200% 100%;
-          animation: shimmer 8s ease-in-out infinite;
-          pointer-events: none;
-        }
-
-        .glimmer-pill {
-          position: relative;
-          background: rgb(23, 23, 23);
-          border-radius: 9999px;
-          overflow: hidden;
-        }
-        
-        .glimmer-pill::before {
-          content: '';
-          position: absolute;
-          inset: -1px;
-          background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(236, 72, 153, 0.03),
-            rgba(236, 72, 153, 0.06),
-            rgba(236, 72, 153, 0.03),
-            transparent
-          );
-          background-size: 200% 100%;
-          animation: shimmer 8s ease-in-out infinite;
-          pointer-events: none;
-        }
-
-        .hero-glow {
-          position: absolute;
-          top: 85%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 140%;
-          height: 600px;
-          background: radial-gradient(
-            circle at center,
-            rgba(255, 255, 255, 0.08) 0%,
-            rgba(255, 255, 255, 0.03) 35%,
-            transparent 70%
-          );
-          pointer-events: none;
-          z-index: 0;
-          filter: blur(50px);
-        }
-
-        .scroll-animation {
-          opacity: 0;
-          transform: translateY(20px);
-          transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        .scroll-animation.animate-in {
-          opacity: 1;
-          transform: translateY(0);
-        }
-
-        .scroll-delay-1 { transition-delay: 0.1s; }
-        .scroll-delay-2 { transition-delay: 0.2s; }
-        .scroll-delay-3 { transition-delay: 0.3s; }
-      `}</style>
-
-      {/* Navigation */}
-      <header className="flex items-center justify-between py-4 px-6 border-b border-neutral-800/50">
-        <Link href="/" className={`text-2xl md:text-3xl font-medium ${playfair.className}`}>
-          VibeDev.ai
-        </Link>
-        <nav className="flex items-center gap-4">
-          <Button variant="ghost" size="sm" asChild>
-            <Link href="/login">Log in</Link>
-          </Button>
-          <Button size="sm" asChild>
-            <Link href="/signup">Try for Free</Link>
-          </Button>
-        </nav>
-      </header>
-
-      <main className="flex-grow">
+      <main className="flex-grow pt-16 lg:pt-20">
         {/* Hero Section */}
-        <section className="py-20 px-6 relative">
-          <div className="hero-glow" />
-          <div className="max-w-[1200px] mx-auto text-center relative z-10">
-            {/* Logo Placeholder */}
-            <div className="mb-4">
-              <img 
-                src="/images/idevibelogo.png" 
-                alt="VibeDev Logo" 
-                className="w-36 h-36 mx-auto object-contain"
-              />
-            </div>
-            <div className="inline-flex items-center px-6 py-2 text-base font-medium text-purple-400 mb-8 glimmer-pill fade-in bg-purple-500/10 border border-purple-500/20 shadow-[0_0_15px_rgba(239,68,68,0.1)]">
-              <span className={playfair.className}>A Software Composer app</span>
-            </div>
-            <h1 className={`text-4xl md:text-5xl font-medium mb-6 tracking-tight fade-in delay-1 ${playfair.className}`}>
-              The Easiest Way To<br />Vibe Code With Cursor
-            </h1>
-            <p className="text-lg text-neutral-400 mb-8 fade-in delay-2">
-              VibeDev is your IDE for Vibe Coding
-            </p>
-            <div className="fade-in delay-3">
-              <Button 
-                size="lg" 
-                className="rounded-full"
-                onClick={() => {
-                  document.getElementById('early-access-form')?.scrollIntoView({ 
-                    behavior: 'smooth',
-                    block: 'center'
-                  });
-                }}
-              >
-                Get Early Access
-              </Button>
-            </div>
+        <section className="py-20 px-6 relative min-h-screen flex items-center">
+          {/* Background Image */}
+          <div className="absolute inset-0 z-0">
+            <Image 
+              src="/images/PreferredTherapy_future.jpeg"
+              alt="Preferred Therapy Services Future"
+              fill
+              className="object-cover"
+              priority
+            />
+            {/* Overlay */}
+            <div className="absolute inset-0 bg-black/40"></div>
           </div>
-        </section>
+          
+          <div className="max-w-[1200px] mx-auto text-center relative z-10">
+            <div className="inline-flex items-center px-6 py-2 text-base font-medium text-blue-600 mb-8 glimmer-pill fade-in bg-white/90 border border-blue-200 shadow-[0_0_15px_rgba(59,130,246,0.1)] backdrop-blur-sm">
+              <span className={playfair.className}>Limited Time Offer</span>
+            </div>
+            <h1 className={`text-4xl md:text-6xl font-medium mb-6 tracking-tight fade-in delay-1 text-white drop-shadow-lg ${playfair.className}`}>
+              Revolutionary <span className="text-blue-300">SoftWave</span><br />Therapy Treatment
+            </h1>
+            <p className="text-xl text-white/90 mb-8 fade-in delay-2 max-w-3xl mx-auto drop-shadow-md">
+              For Anyone With Knee Pain, Shoulder Pain, Back Pain, Elbow Pain, Arthritis, Carpal Tunnel, Joint Pain & More!
+            </p>
+            <div className="space-y-6 fade-in delay-3">
+              <div className="flex items-center justify-center">
+                <p className="text-sm text-white font-medium bg-black/30 px-3 py-1 rounded-full backdrop-blur-sm">
+                  <span className="font-bold">1,000+</span> patients found relief
+                </p>
+              </div>
 
-        {/* Demo Section */}
-        <section className="py-20 px-6">
-          <div className="max-w-[1200px] mx-auto scroll-animation">
-            <div className="glimmer-card">
-              <div className="bg-neutral-900">
-                <div className="flex flex-col md:flex-row h-auto md:h-[600px]">
-                  {/* Input Section */}
-                  <div className="w-full md:w-1/2 md:border-r border-neutral-800 p-6 flex flex-col">
-                    <div className="mb-6">
-                      <label className="block text-sm font-medium text-neutral-400 mb-2">What should Cursor do?</label>
-                      <div className="relative">
-                        <input
-                          type="text"
-                          placeholder="Describe what you want to build..."
-                          className="w-full px-4 py-3 bg-neutral-800 border border-neutral-700 rounded-lg text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500/30"
-                        />
-                        <button className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-green-500/10 rounded-lg text-green-400 hover:bg-green-500/20 transition-colors">
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M22 2L11 13"/>
-                            <path d="M22 2L15 22L11 13L2 9L22 2Z"/>
-                          </svg>
-                        </button>
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <h3 className="text-sm font-medium text-neutral-400 mb-4">Start from</h3>
-                      <div className="grid grid-cols-1 gap-3">
-                        {[...Array(2)].map((_, i) => (
-                          <button
-                            key={i}
-                            className="flex items-center gap-3 p-4 bg-neutral-800/50 rounded-lg hover:bg-neutral-800 transition-colors text-left group"
-                          >
-                            <div className="w-8 h-8 rounded-lg bg-green-500/10 text-green-400 flex items-center justify-center group-hover:bg-green-500/20 transition-colors">
-                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-                              </svg>
-                            </div>
-                            <span className="text-sm font-medium">Template {i + 1}</span>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
+              <div className="flex flex-col items-center gap-3">
+                <ScrollToFormButton 
+                  size="lg" 
+                  className="rounded-full text-lg px-8 py-4 bg-green-600 hover:bg-green-700 border-2 border-white shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
+                >
+                  <span className="relative z-10">Get Your $49 Voucher Today - Limited Time!</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                </ScrollToFormButton>
 
-                  {/* Cursor Composer Section - Hidden on mobile */}
-                  <div className="hidden md:flex md:w-1/2 md:flex-col">
-                    <div className="p-4 border-b border-neutral-800">
-                      <h2 className="text-lg font-medium">Cursor Composer</h2>
-                    </div>
-                    <div className="flex-1 p-4 overflow-y-auto space-y-4">
-                      {/* First Message */}
-                      <div className="flex justify-end">
-                        <div className="max-w-[85%] p-4 bg-neutral-800 rounded-lg">
-                          <p className="text-sm text-neutral-300 text-right">
-                            Sure, I can make those changes for you.
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Status Updates */}
-                      <div className="flex flex-col gap-2">
-                        <div className="self-end max-w-[85%] p-3 bg-neutral-800 rounded-lg">
-                          <p className="text-sm font-medium text-green-400 text-right">File generated</p>
-                        </div>
-                        <div className="self-end max-w-[85%] p-3 bg-neutral-800 rounded-lg">
-                          <p className="text-sm font-medium text-green-400 text-right">File generated</p>
-                        </div>
-                        <div className="self-end max-w-[85%] p-3 bg-neutral-800 rounded-lg">
-                          <p className="text-sm font-medium text-green-400 text-right">File generated</p>
-                        </div>
-                        <div className="self-end max-w-[85%] p-3 bg-neutral-800 rounded-lg">
-                          <p className="text-sm font-medium text-green-400 text-right">File generated</p>
-                        </div>
-                      </div>
-
-                      {/* Completion Message */}
-                      <div className="flex justify-end">
-                        <div className="max-w-[85%] p-4 bg-neutral-800 rounded-lg">
-                          <p className="text-sm text-neutral-300 text-right">
-                            I&apos;ve successfully created your app
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="p-4 border-t border-neutral-800">
-                      <div className="relative">
-                        <input
-                          type="text"
-                          placeholder="Type your message..."
-                          className="w-full px-4 py-3 bg-neutral-800 border border-neutral-700 rounded-lg text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500/30"
-                        />
-                        <button className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-green-500/10 rounded-lg text-green-400 hover:bg-green-500/20 transition-colors">
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M22 2L11 13"/>
-                            <path d="M22 2L15 22L11 13L2 9L22 2Z"/>
-                          </svg>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                <div className="flex items-center gap-2 text-white/90 text-sm">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span>Only 7 spots remaining at this price</span>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Features Section */}
-        <section className="py-20 px-6 border-t border-neutral-800">
+        {/* Features Section - Our new modern version */}
+        <section id="why-softwave" className="py-20 px-6 relative overflow-hidden bg-gradient-to-br from-emerald-600 via-emerald-500 to-emerald-700">
+          {/* Dot pattern overlay */}
+          <div className="absolute inset-0 bg-[radial-gradient(#ffffff33_1px,transparent_1px)] [background-size:20px_20px]"></div>
+          
+          {/* Floating orbs */}
+          <div className="absolute w-96 h-96 rounded-full blur-3xl opacity-50 bg-emerald-300/30 -top-48 -left-48"></div>
+          <div className="absolute w-96 h-96 rounded-full blur-3xl opacity-50 bg-white/20 -bottom-48 -right-48"></div>
+          
+          <div className="max-w-[1200px] mx-auto relative">
+            <div className="text-center mb-16 scroll-animation">
+              <h2 className={`text-4xl md:text-5xl font-medium mb-4 text-white ${playfair.className}`}>
+                Why Choose SoftWave Therapy?
+              </h2>
+              <p className="text-blue-50 text-xl max-w-2xl mx-auto">
+                FDA approved, advanced technology for faster pain relief and recovery.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8 relative">
+              {/* Card 1 */}
+              <div className="backdrop-blur-lg bg-white/10 border border-white/20 p-8 rounded-2xl hover:border-white/40 transition-all duration-300 scroll-animation scroll-delay-1 group hover:-translate-y-1">
+                <div className="w-16 h-16 rounded-2xl bg-white/20 text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                  </svg>
+                </div>
+                <h3 className={`text-2xl font-medium mb-4 text-yellow-300 ${playfair.className}`}>
+                  Non-Invasive Treatment
+                </h3>
+                <p className="text-blue-50/90 leading-relaxed">
+                  SoftWave therapy uses advanced acoustic wave technology to stimulate healing without surgery or injections.
+                </p>
+              </div>
+
+              {/* Card 2 */}
+              <div className="backdrop-blur-lg bg-white/10 border border-white/20 p-8 rounded-2xl hover:border-white/40 transition-all duration-300 scroll-animation scroll-delay-2 group hover:-translate-y-1">
+                <div className="w-16 h-16 rounded-2xl bg-white/20 text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                  </svg>
+                </div>
+                <h3 className={`text-2xl font-medium mb-4 text-yellow-300 ${playfair.className}`}>
+                  Fast Pain Relief
+                </h3>
+                <p className="text-blue-50/90 leading-relaxed">
+                  Experience significant pain reduction in just a few sessions. Most patients feel improvement after the first treatment.
+                </p>
+              </div>
+
+              {/* Card 3 */}
+              <div className="backdrop-blur-lg bg-white/10 border border-white/20 p-8 rounded-2xl hover:border-white/40 transition-all duration-300 scroll-animation scroll-delay-3 group hover:-translate-y-1">
+                <div className="w-16 h-16 rounded-2xl bg-white/20 text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  </svg>
+                </div>
+                <h3 className={`text-2xl font-medium mb-4 text-yellow-300 ${playfair.className}`}>
+                  Proven Results
+                </h3>
+                <p className="text-blue-50/90 leading-relaxed">
+                  Clinically proven to treat chronic pain conditions and promote tissue regeneration for long-term healing.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Benefits Section */}
+        <section id="benefits" className="py-20 px-6 border-t border-gray-200">
+          <div className="max-w-[1200px] mx-auto">
+            <div className="grid md:grid-cols-2 gap-12">
+              {/* Left Column - 4 Key Benefits */}
+              <div className="scroll-animation">
+                <h2 className={`text-3xl md:text-4xl font-medium mb-8 ${playfair.className}`}>
+                  4 Key Benefits of SoftWave™ Therapy
+                </h2>
+                <div className="space-y-6">
+                  {[
+                    {
+                      number: "1",
+                      title: "Proven Effective",
+                      description: "Independent studies proved SoftWave™ Therapy to be highly effective with up to 91% of patients experiencing successful healing."
+                    },
+                    {
+                      number: "2", 
+                      title: "Breaks Up Calcification",
+                      description: "Using acoustic wave pulses, calcification is cleared from damaged areas, reducing pain and restoring function."
+                    },
+                    {
+                      number: "3",
+                      title: "Boost Collagen Production", 
+                      description: "Triggers your body into activating resident stem cells, creating new blood vessels and regenerating healthy tissue."
+                    },
+                    {
+                      number: "4",
+                      title: "Non-Invasive",
+                      description: "A strong option for patients who want to avoid surgery, prescription medication or injections. Activate your own stem cells without invasive procedures."
+                    }
+                  ].map((benefit, index) => (
+                    <div key={index} className="flex items-start gap-4 scroll-animation-left" style={{ animationDelay: `${index * 0.15}s` }}>
+                      <div className="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold text-sm flex-shrink-0">
+                        {benefit.number}
+                      </div>
+                      <div>
+                        <h3 className={`text-lg font-bold text-gray-900 mb-2 ${playfair.className}`}>
+                          {benefit.title}
+                        </h3>
+                        <p className="text-gray-600 leading-relaxed">
+                          {benefit.description}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right Column - SoftWave Benefits */}
+              <div className="scroll-animation-right">
+                <h2 className={`text-3xl md:text-4xl font-medium mb-8 ${playfair.className}`}>
+                  SoftWave™ gets your body unstuck and healing:
+                </h2>
+                <div className="space-y-4 mb-8">
+                  {[
+                    "Joint Pain Relief: Knee, Shoulder, Elbow, Ankle, TMJ",
+                    "Soft Tissue Pain Relief: Muscles, Ligaments, Tendons", 
+                    "Chronic Pain Relief: Back, Nerves, Discs, Joints",
+                    "Surgery Alternative: Back, Knee, Hand, Foot, Shoulder",
+                    "Injection Alternative: Stem Cells, PRP, Cortisone, etc",
+                    "Medication Alternative: Erectile Dysfunction, Plantar Fasciitis, Neuropathy"
+                  ].map((item, index) => (
+                    <div key={index} className="flex items-center gap-3 scroll-animation-right" style={{ animationDelay: `${index * 0.1}s` }}>
+                      <div className="w-5 h-5 rounded-full bg-green-500 text-white flex items-center justify-center flex-shrink-0">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                          <polyline points="20,6 9,17 4,12"/>
+                        </svg>
+                      </div>
+                      <span className="text-gray-700 font-medium">{item}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* FDA Clearance Box */}
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 scroll-animation-right">
+                  <h3 className="text-lg font-bold text-blue-900 mb-4">
+                    FDA 510(k) Cleared For:
+                  </h3>
+                  <ul className="space-y-2">
+                    <li className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                      <span className="text-blue-800">Activation of connective tissue</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                      <span className="text-blue-800">Pain Reduction</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                      <span className="text-blue-800">Improved blood supply</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Treatment Areas Section */}
+        <section id="conditions" className="py-20 px-6 border-t border-gray-200 relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-500 to-blue-700">
+          {/* Dot pattern overlay */}
+          <div className="absolute inset-0 bg-[radial-gradient(#ffffff33_1px,transparent_1px)] [background-size:20px_20px]"></div>
+          
+          {/* Floating orbs */}
+          <div className="absolute w-96 h-96 rounded-full blur-3xl opacity-50 bg-blue-300/30 -top-48 -left-48"></div>
+          <div className="absolute w-96 h-96 rounded-full blur-3xl opacity-50 bg-white/20 -bottom-48 -right-48"></div>
+          
+          <div className="max-w-[1200px] mx-auto relative">
+            <div className="text-center mb-16 scroll-animation">
+              <h2 className={`text-4xl md:text-5xl font-medium mb-4 text-yellow-300 ${playfair.className}`}>Conditions We Treat</h2>
+              <p className={`text-white text-3xl max-w-2xl mx-auto drop-shadow-lg ${playfair.className}`} style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>SoftWave therapy is effective for a wide range of pain conditions.</p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                { 
+                  image: "/images/knee_pain_relief.png", 
+                  title: "Knee Pain", 
+                  desc: "Arthritis, tendonitis, ligament injuries",
+                  alt: "SoftWave therapy treatment for knee pain"
+                },
+                { 
+                  image: "/images/Back_pain_relief.png", 
+                  title: "Back Pain", 
+                  desc: "Sciatica, herniated discs, muscle strain",
+                  alt: "SoftWave therapy treatment for back pain"
+                },
+                { 
+                  image: "/images/elbow_pain_relief.png", 
+                  title: "Elbow Pain", 
+                  desc: "Tennis elbow, golfer's elbow",
+                  alt: "SoftWave therapy treatment for elbow pain"
+                },
+                { 
+                  image: "/images/foot_pain_relief.png", 
+                  title: "Foot Pain", 
+                  desc: "Plantar fasciitis, heel pain",
+                  alt: "SoftWave therapy treatment for foot pain"
+                },
+                { 
+                  image: "/images/shoulder_pain_relief.png", 
+                  title: "Shoulder Pain", 
+                  desc: "Rotator cuff, frozen shoulder, bursitis",
+                  alt: "SoftWave therapy treatment for shoulder pain"
+                },
+                { 
+                  image: "/images/ankle_pain_relief.png", 
+                  title: "Ankle Pain", 
+                  desc: "Sprains, arthritis, tendonitis",
+                  alt: "SoftWave therapy treatment for ankle pain"
+                },
+                { 
+                  image: "/images/carpal_tunnel_relief.png", 
+                  title: "Carpal Tunnel", 
+                  desc: "Wrist and hand pain, numbness",
+                  alt: "SoftWave therapy treatment for carpal tunnel"
+                },
+                { 
+                  image: "/images/neck_pain_relief.png", 
+                  title: "Joint Pain", 
+                  desc: "Arthritis, inflammation, stiffness",
+                  alt: "SoftWave therapy treatment for joint pain"
+                }
+              ].map((condition, index) => (
+                <div key={index} className="p-6 rounded-xl border border-blue-300 hover:border-blue-100 transition-colors scroll-animation group shadow-2xl" style={{ backgroundColor: '#3498db', animationDelay: `${index * 0.1}s` }}>
+                  <div className="mb-4 overflow-hidden rounded-lg">
+                    <Image 
+                      src={condition.image} 
+                      alt={condition.alt}
+                      width={300}
+                      height={128}
+                      className="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-300 border-4 border-yellow-300 rounded-lg"
+                    />
+                  </div>
+                  <h3 className={`text-lg font-medium mb-2 text-white ${playfair.className}`}>{condition.title}</h3>
+                  <p className="text-white text-sm font-bold">{condition.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Testimonials Section */}
+        <section className="py-20 px-6 border-t border-gray-200 bg-blue-50">
           <div className="max-w-[1200px] mx-auto">
             <div className="text-center mb-16 scroll-animation">
-              <h2 className={`text-3xl md:text-4xl font-medium mb-3 ${playfair.className}`}>Create in Minutes, Not Months</h2>
-              <p className="text-neutral-400 text-lg">Transform your ideas into reality with three simple prompts.</p>
+              <h2 className={`text-3xl md:text-4xl font-medium mb-3 ${playfair.className}`}>What Our Patients Say</h2>
+              <p className="text-gray-600 text-lg">Real results from real patients.</p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6 relative">
-              <div className="bg-neutral-900 p-8 rounded-xl border border-neutral-800/80 hover:border-green-500/20 transition-colors scroll-animation scroll-delay-1 group">
-                <div className="w-12 h-12 rounded-xl bg-green-500/10 text-green-400 flex items-center justify-center mb-6 group-hover:bg-green-500/20 transition-colors">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                    <polyline points="7 10 12 15 17 10"/>
-                    <line x1="12" y1="15" x2="12" y2="3"/>
-                  </svg>
+            <div className="grid md:grid-cols-3 gap-6">
+              {[
+                {
+                  name: "Sarah M.",
+                  condition: "Chronic Knee Pain",
+                  rating: 5,
+                  text: "After years of knee pain, SoftWave therapy gave me my life back. I can now walk without pain and even started jogging again!"
+                },
+                {
+                  name: "Michael R.",
+                  condition: "Shoulder Injury",
+                  rating: 5,
+                  text: "Amazing results! My shoulder pain was gone after just 3 sessions. The staff at Preferred Therapy Services is incredible."
+                },
+                {
+                  name: "Jennifer L.",
+                  condition: "Back Pain",
+                  rating: 5,
+                  text: "I was skeptical at first, but SoftWave therapy completely eliminated my chronic back pain. Highly recommend!"
+                }
+              ].map((testimonial, index) => (
+                <div key={index} className="bg-gray-50 p-8 rounded-xl border border-gray-200 scroll-animation" style={{ animationDelay: `${index * 0.2}s` }}>
+                  <div className="flex mb-4">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <svg key={i} width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="text-yellow-400">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                      </svg>
+                    ))}
+                  </div>
+                  <p className="text-gray-700 mb-4 italic">&ldquo;{testimonial.text}&rdquo;</p>
+                  <div>
+                    <p className="font-medium text-gray-900">{testimonial.name}</p>
+                    <p className="text-sm text-gray-600">{testimonial.condition}</p>
+                  </div>
                 </div>
-                <h3 className={`text-xl font-medium mb-3 group-hover:text-green-400 transition-colors ${playfair.className}`}>Download Template</h3>
-                <p className="text-neutral-400 leading-relaxed">
-                  Get started with our production-ready template. It&apos;s packed with everything you need to build a stunning landing page.
-                </p>
-              </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
-              <div className="bg-neutral-900 p-8 rounded-xl border border-neutral-800/80 hover:border-green-500/20 transition-colors scroll-animation scroll-delay-2 group">
-                <div className="w-12 h-12 rounded-xl bg-green-500/10 text-green-400 flex items-center justify-center mb-6 group-hover:bg-green-500/20 transition-colors">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4z"/>
-                  </svg>
-                </div>
-                <h3 className={`text-xl font-medium mb-3 group-hover:text-green-400 transition-colors ${playfair.className}`}>Tell VibeDev What You Want</h3>
-                <p className="text-neutral-400 leading-relaxed">
-                  Describe your vision in plain English. VibeDev will control Cursor to transform your words into a beautiful, functional design.
-                </p>
+        {/* Contact Form Section */}
+        <section id="contact-form" className="py-20 px-6 border-t border-gray-200 relative overflow-hidden bg-gradient-to-br from-emerald-600 via-emerald-500 to-emerald-700">
+          {/* Dot pattern overlay */}
+          <div className="absolute inset-0 bg-[radial-gradient(#ffffff33_1px,transparent_1px)] [background-size:20px_20px]"></div>
+          
+          {/* Floating orbs */}
+          <div className="absolute w-96 h-96 rounded-full blur-3xl opacity-50 bg-emerald-300/30 -top-48 -left-48"></div>
+          <div className="absolute w-96 h-96 rounded-full blur-3xl opacity-50 bg-white/20 -bottom-48 -right-48"></div>
+          
+          <div className="max-w-[1200px] mx-auto relative">
+            <div className="text-center mb-12 scroll-animation">
+              <h2 className={`text-3xl md:text-4xl font-medium mb-4 text-white ${playfair.className}`}>Claim Your $49 Softwave Introductory Special</h2>
+              <p className="text-emerald-50 text-xl font-bold drop-shadow-lg" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>
+                <span style={{ color: '#e67e22' }}>LIMITED TIME OFFER</span> - Don&apos;t miss out on this revolutionary pain relief treatment!
+              </p>
+            </div>
+            
+            <div className="grid lg:grid-cols-2 gap-8 items-start">
+              {/* Form Section - First on mobile, left on desktop */}
+              <div className="scroll-animation order-2 lg:order-1">
+                <VoucherForm />
               </div>
-
-              <div className="bg-neutral-900 p-8 rounded-xl border border-neutral-800/80 hover:border-green-500/20 transition-colors scroll-animation scroll-delay-3 group">
-                <div className="w-12 h-12 rounded-xl bg-green-500/10 text-green-400 flex items-center justify-center mb-6 group-hover:bg-green-500/20 transition-colors">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>
-                  </svg>
-                </div>
-                <h3 className={`text-xl font-medium mb-3 group-hover:text-green-400 transition-colors ${playfair.className}`}>Deploy to Vercel</h3>
-                <p className="text-neutral-400 leading-relaxed">
-                  Deploy your landing page to Vercel with one click. Share your creation with the world instantly on a global edge network.
-                </p>
+              
+              {/* Map Section - Second on mobile, right on desktop */}
+              <div className="scroll-animation order-1 lg:order-2">
+                <GoogleMap 
+                  businessName="Preferred Therapy Service"
+                  address="6962 Boulder Ave, Highland, CA 92346"
+                />
               </div>
             </div>
           </div>
         </section>
 
-        {/* Early Access Form Section */}
-        <section id="early-access-form" className="py-20 px-6 border-t border-neutral-800 bg-neutral-900/80">
-          <div className="max-w-[1200px] mx-auto text-center">
-            <div className="scroll-animation">
-              <h2 className={`text-3xl md:text-4xl font-medium mb-4 ${playfair.className}`}>Get Early Access</h2>
-              <p className="text-neutral-400 mb-12">Be the first to experience the future of coding.</p>
+        {/* FAQ Section */}
+        <section id="faq" className="py-20 px-6 border-t border-gray-200 relative overflow-hidden bg-gradient-to-br from-orange-500 via-orange-400 to-orange-600" style={{ backgroundColor: '#f59038' }}>
+          {/* Dot pattern overlay */}
+          <div className="absolute inset-0 bg-[radial-gradient(#ffffff33_1px,transparent_1px)] [background-size:20px_20px]"></div>
+          
+          {/* Floating orbs */}
+          <div className="absolute w-96 h-96 rounded-full blur-3xl opacity-50 bg-orange-300/30 -top-48 -left-48"></div>
+          <div className="absolute w-96 h-96 rounded-full blur-3xl opacity-50 bg-white/20 -bottom-48 -right-48"></div>
+          
+          <div className="max-w-[800px] mx-auto relative">
+            <div className="text-center mb-16 scroll-animation">
+              <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-white ${playfair.className}`}>Frequently Asked Questions</h2>
+              <p className="text-white text-xl font-bold">Everything you need to know about SoftWave therapy.</p>
             </div>
-            <div className="max-w-[400px] mx-auto scroll-animation">
-              <iframe 
-                data-tally-src="https://tally.so/embed/wM756p?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" 
-                loading="lazy" 
-                width="100%" 
-                height="230" 
-                frameBorder="0" 
-                title="Sign Up for Early Access"
-              ></iframe>
-            </div>
+
+            <FAQAccordion faqs={[
+              {
+                q: "What is SoftWave therapy?",
+                a: "SoftWave therapy is a non-invasive treatment that uses acoustic wave technology to stimulate healing in damaged tissues, reduce inflammation, and relieve pain."
+              },
+              {
+                q: "How long does a treatment session take?",
+                a: "Each SoftWave therapy session typically takes 5-10 minutes, depending on the area being treated."
+              },
+              {
+                q: "How many sessions will I need?",
+                a: "Most patients see significant improvement in 3-6 sessions, though the exact number depends on your specific condition and severity."
+              },
+              {
+                q: "Is SoftWave therapy painful?",
+                a: "No, SoftWave therapy is generally well-tolerated. You may feel a mild pulsing sensation, but it should not be painful."
+              },
+              {
+                q: "Are there any side effects?",
+                a: "SoftWave therapy has minimal side effects. Some patients may experience mild redness or tenderness in the treated area, which typically resolves within 24 hours."
+              },
+              {
+                q: "How do I claim my $49 voucher?",
+                a: "Simply fill out the form above and we'll contact you to schedule your consultation and first treatment session."
+              },
+              {
+                q: "Does insurance pay for Softwave Sessions?",
+                a: "Insurance does not typically pay for softwave at this time. However some insurances may cover it if it is medical necessity."
+              }
+            ]} />
           </div>
         </section>
       </main>
 
-      <footer className="py-8 px-6 border-t border-neutral-800/50 scroll-animation">
-        <div className="max-w-[1200px] mx-auto flex items-center justify-between">
-          <div className="text-sm text-neutral-400">
-            © 2024 Software Composer LP. All rights reserved.
-          </div>
-          <div className="flex items-center gap-6">
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors">
-              <span className="sr-only">Twitter</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/>
-              </svg>
-            </a>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors">
-              <span className="sr-only">GitHub</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
-              </svg>
-            </a>
-            <a href="https://discord.com" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors">
-              <span className="sr-only">Discord</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M18 6h0a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3h-7a3 3 0 0 1-3-3v0"/>
-                <path d="M6 18v-7a3 3 0 0 1 3-3h7"/>
-                <circle cx="8" cy="12" r="1"/>
-                <circle cx="16" cy="12" r="1"/>
-              </svg>
-            </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors">
-              <span className="sr-only">LinkedIn</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-                <rect x="2" y="9" width="4" height="12"/>
-                <circle cx="4" cy="4" r="2"/>
-              </svg>
-            </a>
+      <footer className="py-8 px-6 border-t border-gray-200 scroll-animation">
+        <div className="max-w-[1200px] mx-auto">
+          {/* Footer Content */}
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <Image 
+                src="/Preferred_Therapy_Services_logo.png" 
+                alt="Preferred Therapy Services Logo" 
+                width={160}
+                height={40}
+                className="h-10 w-auto object-contain"
+              />
+              <div className="text-sm text-green-600">© 2024 Preferred Therapy Services. All rights reserved.</div>
+
+              {/* Inline Social Proof (compact) */}
+              <div className="hidden md:flex items-center gap-2 pl-4 border-l border-gray-200">
+                <div className="flex -space-x-1">
+                  {[...Array(3)].map((_, i) => (
+                    <div key={i} className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 border-2 border-white flex items-center justify-center">
+                      <span className="text-[10px] text-white font-bold">{String.fromCharCode(65 + i)}</span>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-emerald-600 font-medium whitespace-nowrap">
+                  <span className="font-bold">Join the 1,000+</span> patients who&apos;ve found relief
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </footer>
-    </div>
+      </div>
+    </ScrollAnimationProvider>
   )
 }
