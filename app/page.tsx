@@ -103,9 +103,10 @@ export default function Page() {
             <div className="grid md:grid-cols-3 gap-8 relative">
               {/* Card 1 */}
               <div className="backdrop-blur-lg bg-white/10 border border-white/20 p-8 rounded-2xl hover:border-white/40 transition-all duration-300 scroll-animation scroll-delay-1 group hover:-translate-y-1">
-                <div className="w-16 h-16 rounded-2xl bg-white/20 text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600 via-blue-500 to-blue-700 text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    <circle cx="12" cy="12" r="3" fill="white" opacity="0.3"/>
                   </svg>
                 </div>
                 <h3 className={`text-2xl font-medium mb-4 text-yellow-300 ${playfair.className}`}>
@@ -118,9 +119,10 @@ export default function Page() {
 
               {/* Card 2 */}
               <div className="backdrop-blur-lg bg-white/10 border border-white/20 p-8 rounded-2xl hover:border-white/40 transition-all duration-300 scroll-animation scroll-delay-2 group hover:-translate-y-1">
-                <div className="w-16 h-16 rounded-2xl bg-white/20 text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600 via-blue-500 to-blue-700 text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    <circle cx="12" cy="12" r="3" fill="white" opacity="0.3"/>
                   </svg>
                 </div>
                 <h3 className={`text-2xl font-medium mb-4 text-yellow-300 ${playfair.className}`}>
@@ -133,9 +135,10 @@ export default function Page() {
 
               {/* Card 3 */}
               <div className="backdrop-blur-lg bg-white/10 border border-white/20 p-8 rounded-2xl hover:border-white/40 transition-all duration-300 scroll-animation scroll-delay-3 group hover:-translate-y-1">
-                <div className="w-16 h-16 rounded-2xl bg-white/20 text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600 via-blue-500 to-blue-700 text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    <circle cx="12" cy="12" r="3" fill="white" opacity="0.3"/>
                   </svg>
                 </div>
                 <h3 className={`text-2xl font-medium mb-4 text-yellow-300 ${playfair.className}`}>
