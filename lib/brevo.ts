@@ -40,7 +40,7 @@ export async function createBrevoContact(contactData: VoucherContact) {
         VOUCHER_ID: contactData.voucherId,
         VOUCHER_STATUS: 'pending'
       },
-      listIds: [1], // Add to default list
+      listIds: [3], // Add to default list
       updateEnabled: true
     }
 
