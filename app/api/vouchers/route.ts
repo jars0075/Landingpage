@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { createBrevoContact, sendVoucherEmail, updateVoucherStatus, type VoucherContact } from '@/lib/brevo'
+// import { createBrevoContact, sendVoucherEmail, updateVoucherStatus, type VoucherContact } from '@/lib/brevo'
 
 // Validation schema for voucher form data
 const voucherSchema = z.object({
@@ -45,7 +45,7 @@ function formatPhoneNumber(phone: string): string {
 }
 
 // Store voucher data in Brevo
-async function storeVoucher(data: VoucherData, voucherId: string) {
+/* async function storeVoucher(data: VoucherData, voucherId: string) {
   // Prepare contact data for Brevo
   const contactData: VoucherContact = {
     ...data,
@@ -55,10 +55,10 @@ async function storeVoucher(data: VoucherData, voucherId: string) {
   // Create contact in Brevo
   const brevoResult = await createBrevoContact(contactData)
   return brevoResult.success
-}
+} */
 
 // Send voucher notification
-async function sendVoucherNotification(data: VoucherData, voucherId: string) {
+/* async function sendVoucherNotification(data: VoucherData, voucherId: string) {
   const { preferredContact, email } = data
   
   try {
@@ -84,7 +84,7 @@ async function sendVoucherNotification(data: VoucherData, voucherId: string) {
     console.error('Failed to send voucher notification:', error)
     return false
   }
-}
+} */
 
 
 export async function POST(request: NextRequest) {
@@ -114,7 +114,8 @@ export async function POST(request: NextRequest) {
     const voucherId = generateVoucherId()
     
     // Store voucher data in Brevo
-    const stored = await storeVoucher(data, voucherId)
+    // const stored = await storeVoucher(data, voucherId)
+    const stored = true
     
     if (!stored) {
       return NextResponse.json(
@@ -127,7 +128,8 @@ export async function POST(request: NextRequest) {
     }
     
     // Send notification
-    const notificationSent = await sendVoucherNotification(data, voucherId)
+    // const notificationSent = await sendVoucherNotification(data, voucherId)
+    const notificationSent = true
     
     if (data.preferredContact === 'email' && !notificationSent) {
       // Email failed but contact was created

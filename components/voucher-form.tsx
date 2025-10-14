@@ -72,7 +72,7 @@ export function VoucherForm() {
     
     try {
       // Real API call to create voucher
-      const response = await fetch('/api/vouchers', {
+      const response = await fetch('/api/resend', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -83,10 +83,10 @@ export function VoucherForm() {
       const result = await response.json()
       
       if (result.success) {
-        console.log('Voucher created:', result.voucherId)
+        console.log('Voucher submitted via Resend')
         setIsSubmitted(true)
       } else {
-        console.error('Voucher creation failed:', result.message)
+        console.error('Voucher submission failed:', result.message)
         // You could set an error state here to show to the user
         alert(result.message || 'Failed to submit voucher request. Please try again.')
       }
