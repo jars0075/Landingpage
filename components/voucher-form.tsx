@@ -70,8 +70,8 @@ export function VoucherForm() {
     
     setIsSubmitting(true)
     
+    // This form now submits to the /api/resend endpoint
     try {
-      // Real API call to create voucher
       const response = await fetch('/api/resend', {
         method: 'POST',
         headers: {
