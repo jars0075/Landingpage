@@ -134,10 +134,16 @@ export async function sendAdminNotificationEmail(contactData: VoucherContact) {
     }
 
     const emailData: SendSmtpEmail = {
-      to: [{
-        email: 'info@preferredtherapyservice.com',
-        name: 'Preferred Therapy Admin'
-      }],
+      to: [
+        {
+          email: 'info@preferredtherapyservice.com',
+          name: 'Preferred Therapy Admin'
+        },
+        {
+          email: 'softwave.cattle999@passmail.net',
+          name: 'Secondary Admin'
+        }
+      ],
       subject: `New Voucher Request: ${contactData.firstName} ${contactData.lastName}`,
       htmlContent: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
