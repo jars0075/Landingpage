@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-// import { createBrevoContact, sendVoucherEmail, updateVoucherStatus, type VoucherContact } from '@/lib/brevo'
+import {
+  createBrevoContact,
+  sendVoucherEmail,
+  updateVoucherStatus,
+  sendAdminNotificationEmail,
+  type VoucherContact
+} from '@/lib/brevo'
 
 // Validation schema for voucher form data
 const voucherSchema = z.object({
@@ -45,7 +51,7 @@ function formatPhoneNumber(phone: string): string {
 }
 
 // Store voucher data in Brevo
-/* async function storeVoucher(data: VoucherData, voucherId: string) {
+async function storeVoucher(data: VoucherData, voucherId: string) {
   // Prepare contact data for Brevo
   const contactData: VoucherContact = {
     ...data,
@@ -55,19 +61,15 @@ function formatPhoneNumber(phone: string): string {
   // Create contact in Brevo
   const brevoResult = await createBrevoContact(contactData)
   return brevoResult.success
-} */
+}
 
 // Send voucher notification
-/* async function sendVoucherNotification(data: VoucherData, voucherId: string) {
+async function sendVoucherNotification(data: VoucherContact) {
   const { preferredContact, email } = data
   
   try {
     if (preferredContact === 'email') {
-      const contactData: VoucherContact = {
-        ...data,
-        voucherId
-      }
-      const emailResult = await sendVoucherEmail(contactData)
+      const emailResult = await sendVoucherEmail(data)
       
       if (emailResult.success) {
         // Update status to 'sent'
@@ -84,7 +86,7 @@ function formatPhoneNumber(phone: string): string {
     console.error('Failed to send voucher notification:', error)
     return false
   }
-} */
+}
 
 
 export async function POST(request: NextRequest) {
@@ -114,9 +116,8 @@ export async function POST(request: NextRequest) {
     const voucherId = generateVoucherId()
     
     // Store voucher data in Brevo
-    // const stored = await storeVoucher(data, voucherId)
-    const stored = true
-    
+    const stored = await storeVoucher(data, voucherId)
+
     if (!stored) {
       return NextResponse.json(
         {
@@ -126,10 +127,21 @@ export async function POST(request: NextRequest) {
         { status: 500 }
       )
     }
+
+    // Prepare contact data once for all email functions
+    const contactData: VoucherContact = {
+      ...data,
+      voucherId
+    }
     
-    // Send notification
-    // const notificationSent = await sendVoucherNotification(data, voucherId)
-    const notificationSent = true
+    // Send admin notification (fire and forget)
+    sendAdminNotificationEmail(contactData).catch(error => {
+      // Log the error but don't block the user response
+      console.error('Failed to send admin notification:', error)
+    })
+    
+    // Send notification to the user
+    const notificationSent = await sendVoucherNotification(contactData)
     
     if (data.preferredContact === 'email' && !notificationSent) {
       // Email failed but contact was created

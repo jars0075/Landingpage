@@ -111,7 +111,7 @@ export async function sendVoucherEmail(contactData: VoucherContact) {
       `,
       sender: {
         name: 'Preferred Therapy Services',
-        email: 'noreply@preferredtherapy.com'
+        email: 'info@preferredtherapyservice.com'
       }
     }
 
@@ -121,6 +121,55 @@ export async function sendVoucherEmail(contactData: VoucherContact) {
     return { success: true }
   } catch (error: any) {
     console.error('Error sending voucher email:', error)
+    return { success: false, error: error.message || 'Unknown error' }
+  }
+}
+
+// Send admin notification email
+export async function sendAdminNotificationEmail(contactData: VoucherContact) {
+  try {
+    if (!apiKey) {
+      console.error('BREVO_API_KEY not found in environment variables')
+      return { success: false, error: 'API key not configured' }
+    }
+
+    const emailData: SendSmtpEmail = {
+      to: [{
+        email: 'info@preferredtherapyservice.com',
+        name: 'Preferred Therapy Admin'
+      }],
+      subject: `New Voucher Request: ${contactData.firstName} ${contactData.lastName}`,
+      htmlContent: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #1e40af;">New SoftWave Voucher Request</h2>
+          <p>A new voucher request has been submitted through the landing page.</p>
+          
+          <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="color: #1f2937; margin-top: 0;">Submitted Information:</h3>
+            <p><strong>Name:</strong> ${contactData.firstName} ${contactData.lastName}</p>
+            <p><strong>Email:</strong> ${contactData.email}</p>
+            <p><strong>Phone:</strong> ${contactData.phone}</p>
+            <p><strong>Pain Area:</strong> ${contactData.painArea}</p>
+            <p><strong>Preferred Contact:</strong> ${contactData.preferredContact}</p>
+            <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 20px 0;" />
+            <p><strong>Voucher ID:</strong> ${contactData.voucherId}</p>
+          </div>
+          
+          <p>You can view this new contact in your Brevo dashboard.</p>
+        </div>
+      `,
+      sender: {
+        name: 'Softwave Landing Page',
+        email: 'noreply@preferredtherapy.com'
+      }
+    }
+
+    await transactionalEmailsApi.sendTransacEmail(emailData)
+    console.log(`Admin notification sent successfully for: ${contactData.email}`)
+    
+    return { success: true }
+  } catch (error: any) {
+    console.error('Error sending admin notification email:', error)
     return { success: false, error: error.message || 'Unknown error' }
   }
 }
